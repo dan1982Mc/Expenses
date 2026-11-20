@@ -30,8 +30,10 @@
  </article>
  <article class="card forecast">
   <div class="tag">Are €180 monthly advances enough?</div>
-  <div class="forecast-main"><div><span class="foot">Projected full-year energy cost</span><strong id="projected">€1,919.63</strong></div><div><span class="foot">Expected annual payment</span><strong id="annualAdvance">€2,160.00</strong></div></div>
-  <div class="balance-line"><span>Projected credit / (shortfall) at annual settlement</span><strong id="projectionBalance">+€240.37</strong></div>
+  <div class="forecast-main"><div><span class="foot">Projected full-year cost before refund</span><strong id="projected">€1,919.63</strong></div><div><span class="foot">Annual advance payments</span><strong id="annualAdvance">€2,160.00</strong></div></div>
+  <div class="balance-line"><span>One-off refund deducted</span><strong id="refundApplied">−€450.00</strong></div>
+  <div class="balance-line"><span>Projected net annual energy cost</span><strong id="projectedNetCost">€1,469.63</strong></div>
+  <div class="balance-line"><span>Projected credit / (shortfall) at annual settlement</span><strong id="projectionBalance">+€690.37</strong></div>
   <div class="foot" id="projectionBasis">Based on previous year's consumption at your current unit prices, because no current-year readings have been entered yet.</div>
   <div class="meter"><span id="meterFill"></span></div>
   <div class="smallrow"><span id="monthlyAverage">Expected average: €159.97/month</span><span id="paymentVerdict" class="good">€180 appears sufficient</span></div>
@@ -61,9 +63,10 @@
    <div class="field"><label for="erate">Electricity price (€ / kWh)</label><input id="erate" type="number" min="0" step="0.00001"></div>
    <div class="field"><label for="grate">Gas price (€ / m³)</label><input id="grate" type="number" min="0" step="0.00001"></div>
    <div class="field wide"><label for="advance">Current monthly advance payment (€)</label><input id="advance" type="number" min="0" step="0.01"></div>
+   <div class="field wide"><label for="refund">One-off refund / credit applied to this energy year (€)</label><input id="refund" type="number" min="0" step="0.01"></div>
   </div>
-  <p class="foot">Rates supplied by you: €0.26697/kWh and €1.43817/m³. No separate fixed costs are included. The monthly advance is a prepayment, not an extra energy cost.</p>
-  <div class="mini-summary"><div><span>Expected yearly cost at last year's usage</span><b id="baselineCost">€1,919.63</b></div><div><span>Expected monthly average</span><b id="baselineMonthly">€159.97</b></div><div><span>12 monthly advances at current amount</span><b id="annualPlan">€2,160.00</b></div></div>
+  <p class="foot">Rates supplied by you: €0.26697/kWh and €1.43817/m³. No separate fixed costs are included. The €450 refund is deducted once from the projected annual cost; it is not deducted from monthly consumption costs.</p>
+  <div class="mini-summary"><div><span>Previous-year cost before refund</span><b id="baselineCost">€1,919.63</b></div><div><span>One-off refund deducted</span><b id="baselineRefund">−€450.00</b></div><div><span>Previous-year net cost after refund</span><b id="baselineNetCost">€1,469.63</b></div><div><span>Net monthly average</span><b id="baselineMonthly">€122.47</b></div><div><span>12 monthly advances at current amount</span><b id="annualPlan">€2,160.00</b></div></div>
  </article>
 </section>
 <section class="section-head"><h2>Record payments</h2><p>Existing payments are already entered as two payments of €228 and two of €180. Add each future payment when it appears on your bank statement.</p></section>
