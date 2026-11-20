@@ -1,0 +1,79 @@
+{
+  "title": "Household energy historical baseline",
+  "energy_year": "2025/2026",
+  "start_month": 7,
+  "period_start": "2025-07",
+  "period_end": "2026-06",
+  "source_file": "Schermafbeelding 2026-11-20 150101.png",
+  "note": "Only July 2025 onward is included. January–June 2025 relates to a different house and is excluded.",
+  "units": {
+    "electricity": "kWh",
+    "gas": "m3"
+  },
+  "months": [
+    {
+      "month": "2025-07",
+      "electricity_kwh": 141,
+      "gas_m3": 12
+    },
+    {
+      "month": "2025-08",
+      "electricity_kwh": 114,
+      "gas_m3": 23
+    },
+    {
+      "month": "2025-09",
+      "electricity_kwh": 229,
+      "gas_m3": 41
+    },
+    {
+      "month": "2025-10",
+      "electricity_kwh": 304,
+      "gas_m3": 47
+    },
+    {
+      "month": "2025-11",
+      "electricity_kwh": 269,
+      "gas_m3": 108
+    },
+    {
+      "month": "2025-12",
+      "electricity_kwh": 337,
+      "gas_m3": 151
+    },
+    {
+      "month": "2026-01",
+      "electricity_kwh": 399,
+      "gas_m3": 112
+    },
+    {
+      "month": "2026-02",
+      "electricity_kwh": 330,
+      "gas_m3": 71
+    },
+    {
+      "month": "2026-03",
+      "electricity_kwh": 368,
+      "gas_m3": 60
+    },
+    {
+      "month": "2026-04",
+      "electricity_kwh": 268,
+      "gas_m3": 27
+    },
+    {
+      "month": "2026-05",
+      "electricity_kwh": 281,
+      "gas_m3": 37
+    },
+    {
+      "month": "2026-06",
+      "electricity_kwh": 261,
+      "gas_m3": 33
+    }
+  ],
+  "totals": {
+    "electricity_kwh": 3301,
+    "gas_m3": 722
+  }
+}
