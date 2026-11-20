@@ -30,7 +30,7 @@ The four initial payments are stored without dates because dates were not suppli
 - Monthly energy cost = electricity kWh × electricity rate + gas m³ × gas rate.
 - A month's cost is counted only when both electricity and gas values are entered.
 - Payments logged = sum of actual payment records.
-- Paid less recorded consumption cost = payments logged minus costs for months with both readings. This is a running comparison, **not a confirmed supplier credit**, because missing readings and payment dates may affect the true balance.
+- Paid less recorded consumption cost = payments logged minus costs for months with both readings. This is shown at the bottom of the Payments made to supplier card. It is a running comparison, **not a confirmed supplier credit**, because missing readings and payment dates may affect the true balance.
 - Projected full-year energy cost uses complete current-year months entered consecutively from July, then uses the matching 2025/26 monthly consumption for the remaining months. As you enter actual consumption, the estimate is replaced month by month.
 - Projected annual credit / shortfall = 12 × current monthly advance − projected full-year energy cost.
 - No additional fixed charges are added.
