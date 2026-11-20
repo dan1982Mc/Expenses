@@ -1,10 +1,88 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Household Energy Dashboard</title><link rel="stylesheet" href="styles.css"></head><body><main class="wrap">
-<header class="top"><div><div class="eyebrow">Household energy · monthly tracking</div><h1>Energy overview · 2026/2027</h1><div class="sub">Energy year runs from 1 July to 30 June. Compare against July 2025–June 2026 only. All earlier figures are excluded because they relate to a different house. Enter future months manually; this dashboard does not use CSV files.</div></div><div><div class="status" id="status">No current-year readings yet</div><div class="actions"><button id="export">Export backup</button><button id="import">Import backup</button><button class="danger" id="reset">Reset entries</button><input id="file" type="file" accept="application/json" hidden></div></div></header>
-<section class="grid kpis"><div class="card kpi"><div class="label">Electricity · year to date</div><div class="big" id="ekpi">—</div><div class="foot" id="efoot">Previous year: 3,301 kWh</div></div><div class="card kpi"><div class="label">Gas · year to date</div><div class="big" id="gkpi">—</div><div class="foot" id="gfoot">Previous year: 722 m³</div></div><div class="card kpi"><div class="label">Estimated energy cost · recorded months</div><div class="big" id="ckpi">—</div><div class="foot" id="cfoot">Enter both monthly readings to calculate</div></div><div class="card kpi"><div class="label">Monthly advance payment</div><div class="big" id="akpi">€180</div><div class="foot" id="afoot">€2,160 planned over 12 months</div></div></section>
-<div class="section"><h2>Current year vs previous year</h2><p>Compare your entered energy-year totals with the same months last year.</p></div><section class="grid two"><div class="card"><div class="tag">Electricity · kWh</div><div class="compare"><div><span class="foot">Current year to date</span><strong id="eytd">—</strong><span class="foot" id="eytdsub">Awaiting entries</span></div><div><span class="foot">Change vs last year</span><strong id="echg">—</strong><span class="foot" id="echgsub">Not yet available</span></div></div><svg id="echart" class="chart" viewBox="0 0 540 175"></svg><div class="legend"><i class="swatch"></i>2025/26 <i class="swatch new"></i>2026/27</div></div><div class="card"><div class="tag">Gas · m³</div><div class="compare"><div><span class="foot">Current year to date</span><strong id="gytd">—</strong><span class="foot" id="gytdsub">Awaiting entries</span></div><div><span class="foot">Change vs last year</span><strong id="gchg">—</strong><span class="foot" id="gchgsub">Not yet available</span></div></div><svg id="gchart" class="chart" viewBox="0 0 540 175"></svg><div class="legend"><i class="swatch"></i>2025/26 <i class="swatch new"></i>2026/27</div></div></section>
-<section class="grid two" style="margin-top:12px"><div class="card"><div class="tag">Latest month-on-month · electricity</div><div class="big" id="emom">—</div><div class="foot" id="emomsub">Enter two consecutive months.</div></div><div class="card"><div class="tag">Latest month-on-month · gas</div><div class="big" id="gmom">—</div><div class="foot" id="gmomsub">Enter two consecutive months.</div></div></section>
-<div class="section"><h2>Enter monthly consumption</h2><p>Manually enter monthly kWh and m³ totals. Leave a field blank until you have that reading.</p></div><section class="grid cols"><div class="card"><div class="tag">Monthly entry</div><div class="fieldgrid"><div class="field"><label for="month">Energy-year month</label><select id="month"></select></div><div class="field"><label for="quality">Entry status</label><select id="quality"><option value="complete">Completed month</option><option value="partial">Partial / estimate</option></select></div><div class="field"><label for="elec">Electricity</label><input id="elec" type="number" min="0" step="0.01" placeholder="e.g. 285"><small>kWh</small></div><div class="field"><label for="gas">Gas</label><input id="gas" type="number" min="0" step="0.001" placeholder="e.g. 62.5"><small>m³</small></div></div><div class="actions"><button class="primary" id="save">Save month</button><button id="clear">Clear month</button><span class="foot" id="feedback">Saved in this browser.</span></div><div class="note">A month is included in the cost total only when both electricity and gas have been entered. Mark unfinished readings as “Partial / estimate”.</div><div class="money"><b>Saved current-year entries</b><div id="saved" class="foot">No months entered yet.</div></div></div>
-<div class="card"><div class="tag">Unit prices & advance payment</div><div class="fieldgrid"><div class="field"><label for="erate">Electricity price (€ / kWh)</label><input id="erate" type="number" min="0" step="0.00001"></div><div class="field"><label for="grate">Gas price (€ / m³)</label><input id="grate" type="number" min="0" step="0.00001"></div><div class="field"><label for="fixed">Fixed charges (€ / month)</label><input id="fixed" type="number" min="0" step="0.01"></div><div class="field"><label for="advance">Monthly advance (€)</label><input id="advance" type="number" min="0" step="0.01"></div><div class="field"><label for="paid">Advance payments made</label><input id="paid" type="number" min="0" max="12" step="1"></div></div><div class="foot">Starting prices supplied by you: €0.26697/kWh electricity and €1.43817/m³ gas. Prices are editable. Fixed charges start at €0. Estimates are consumption × unit price plus any fixed charges entered; they are not a final supplier settlement.</div><div class="money"><b>Cost position</b><div><span>Estimated current-year cost</span><b id="cytd">—</b></div><div><span>Advance payments recorded</span><b id="paidtotal">€0</b></div><div><span>Advance less estimated cost</span><b id="balance">—</b></div><div><span>Annual advance plan</span><b id="annual">€2,160</b></div><div><span>Previous-year cost at current rates</span><b id="prevCost">—</b></div></div></div></section>
-<div class="section"><h2>Month-by-month comparison</h2><p>Historical figures are from the PNG. Current-year figures are manual entries.</p></div><div class="tablewrap"><table class="table"><thead><tr><th>Month</th><th>Previous electricity</th><th class="current">Current electricity</th><th>Difference</th><th>Previous gas</th><th class="current">Current gas</th><th>Difference</th><th class="current">Cost</th><th>Status</th></tr></thead><tbody id="rows"></tbody></table></div>
-<footer class="footer"><span>Baseline: Jul 2025–Jun 2026 · 3,301 kWh · 722 m³</span><span>Current energy year: Jul 2026–Jun 2027 · Browser-local storage</span></footer></main>
-<script src="app.js" defer></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Household Energy Account</title><link rel="stylesheet" href="styles.css">
+</head>
+<body><main class="wrap">
+<header class="top">
+ <div><div class="eyebrow">Household energy · usage & payments</div><h1>Energy account · 2026/2027</h1>
+ <p class="sub">Energy year: 1 July 2026 – 30 June 2027. Compare against July 2025 – June 2026. Data before July 2025 is excluded because it relates to a different house.</p></div>
+ <div class="top-actions"><span class="status" id="status">Loading account…</span><div class="actions"><button id="export">Export backup</button><button id="import">Import backup</button><button class="danger" id="reset">Reset current-year entries</button><input id="file" type="file" accept="application/json" hidden></div></div>
+</header>
+<section class="grid kpis">
+ <article class="card kpi"><div class="label">Electricity used this year</div><div class="big" id="ekpi">—</div><div class="foot" id="efoot">Previous year: 3,301 kWh</div></article>
+ <article class="card kpi gas"><div class="label">Gas used this year</div><div class="big" id="gkpi">—</div><div class="foot" id="gfoot">Previous year: 722 m³</div></article>
+ <article class="card kpi cost"><div class="label">Cost of entered consumption</div><div class="big" id="ckpi">—</div><div class="foot" id="cfoot">Calculated from complete months</div></article>
+ <article class="card kpi paid"><div class="label">Payments made to supplier</div><div class="big" id="pkpi">€816.00</div><div class="foot" id="pfoot">4 payments recorded</div></article>
+</section>
+<section class="section-head"><h2>Your energy account</h2><p>The most important comparison: money paid to the supplier versus the estimated cost of the energy used.</p></section>
+<section class="grid account-grid">
+ <article class="card account">
+  <div class="tag">Paid vs consumed · current energy year</div>
+  <div class="account-hero"><div><span class="foot">Payments logged</span><strong id="paidTotal">€816.00</strong></div><div><span class="foot">Cost of complete months entered</span><strong id="usageCost">—</strong></div></div>
+  <div class="balance-line"><span>Paid less entered consumption cost</span><strong id="balance">Waiting for usage entries</strong></div>
+  <p class="note">This is a running comparison, not your supplier's confirmed credit. Any month without both electricity and gas readings is excluded from the consumption-cost total.</p>
+ </article>
+ <article class="card forecast">
+  <div class="tag">Are €180 monthly advances enough?</div>
+  <div class="forecast-main"><div><span class="foot">Projected full-year energy cost</span><strong id="projected">€1,919.63</strong></div><div><span class="foot">Expected annual payment</span><strong id="annualAdvance">€2,160.00</strong></div></div>
+  <div class="balance-line"><span>Projected credit / (shortfall) at annual settlement</span><strong id="projectionBalance">+€240.37</strong></div>
+  <div class="foot" id="projectionBasis">Based on previous year's consumption at your current unit prices, because no current-year readings have been entered yet.</div>
+  <div class="meter"><span id="meterFill"></span></div>
+  <div class="smallrow"><span id="monthlyAverage">Expected average: €159.97/month</span><span id="paymentVerdict" class="good">€180 appears sufficient</span></div>
+ </article>
+</section>
+<section class="section-head"><h2>Consumption compared with last year</h2><p>Year-to-date comparison uses the same July–June months. Entered current-year readings appear beside the historical values.</p></section>
+<section class="grid two">
+ <article class="card"><div class="tag">Electricity · kWh</div><div class="compare"><div><span class="foot">Current year entered</span><strong id="eytd">—</strong><span class="foot" id="eytdsub">No entries yet</span></div><div><span class="foot">Change vs same months last year</span><strong id="echg">—</strong><span class="foot" id="echgsub">Waiting for entries</span></div></div><svg id="echart" class="chart" viewBox="0 0 540 175" role="img" aria-label="Electricity comparison by month"></svg><div class="legend"><i class="swatch old"></i>2025/26 <i class="swatch new"></i>2026/27</div></article>
+ <article class="card"><div class="tag">Gas · m³</div><div class="compare"><div><span class="foot">Current year entered</span><strong id="gytd">—</strong><span class="foot" id="gytdsub">No entries yet</span></div><div><span class="foot">Change vs same months last year</span><strong id="gchg">—</strong><span class="foot" id="gchgsub">Waiting for entries</span></div></div><svg id="gchart" class="chart" viewBox="0 0 540 175" role="img" aria-label="Gas comparison by month"></svg><div class="legend"><i class="swatch old"></i>2025/26 <i class="swatch new"></i>2026/27</div></article>
+</section>
+<section class="grid two mom-grid">
+ <article class="card"><div class="tag">Latest month-on-month · electricity</div><div class="big" id="emom">—</div><div class="foot" id="emomsub">Enter two consecutive months.</div></article>
+ <article class="card"><div class="tag">Latest month-on-month · gas</div><div class="big" id="gmom">—</div><div class="foot" id="gmomsub">Enter two consecutive months.</div></article>
+</section>
+<section class="section-head"><h2>Update monthly consumption</h2><p>Use your monthly energy statement or meter portal. This dashboard intentionally does not import the CSV files.</p></section>
+<section class="grid input-grid">
+ <article class="card">
+  <div class="tag">Monthly usage entry</div>
+  <div class="fieldgrid">
+   <div class="field"><label for="month">Month</label><select id="month"></select></div>
+   <div class="field"><label for="quality">Reading type</label><select id="quality"><option value="complete">Actual monthly reading</option><option value="estimate">Estimate / partial month</option></select></div>
+   <div class="field"><label for="elec">Electricity consumption</label><input id="elec" type="number" min="0" step="0.01" placeholder="e.g. 285"><small>kWh</small></div>
+   <div class="field"><label for="gas">Gas consumption</label><input id="gas" type="number" min="0" step="0.001" placeholder="e.g. 62.5"><small>m³</small></div>
+  </div>
+  <div class="actions"><button class="primary" id="save">Save month</button><button id="clear">Clear selected month</button><span class="foot" id="feedback">Entries are saved in this browser.</span></div>
+  <p class="note">A month counts as complete for cost tracking only when both readings are entered. Estimates are shown separately and make the annual projection provisional.</p>
+ </article>
+ <article class="card">
+  <div class="tag">Your unit prices & monthly advance</div>
+  <div class="fieldgrid">
+   <div class="field"><label for="erate">Electricity price (€ / kWh)</label><input id="erate" type="number" min="0" step="0.00001"></div>
+   <div class="field"><label for="grate">Gas price (€ / m³)</label><input id="grate" type="number" min="0" step="0.00001"></div>
+   <div class="field wide"><label for="advance">Current monthly advance payment (€)</label><input id="advance" type="number" min="0" step="0.01"></div>
+  </div>
+  <p class="foot">Rates supplied by you: €0.26697/kWh and €1.43817/m³. No separate fixed costs are included. The monthly advance is a prepayment, not an extra energy cost.</p>
+  <div class="mini-summary"><div><span>Expected yearly cost at last year's usage</span><b id="baselineCost">€1,919.63</b></div><div><span>Expected monthly average</span><b id="baselineMonthly">€159.97</b></div><div><span>12 monthly advances at current amount</span><b id="annualPlan">€2,160.00</b></div></div>
+ </article>
+</section>
+<section class="section-head"><h2>Record payments</h2><p>Existing payments are already entered as two payments of €228 and two of €180. Add each future payment when it appears on your bank statement.</p></section>
+<section class="grid payments-grid">
+ <article class="card">
+  <div class="tag">Add an actual payment</div>
+  <div class="fieldgrid">
+   <div class="field"><label for="paymentDate">Date paid (optional)</label><input id="paymentDate" type="date"></div>
+   <div class="field"><label for="paymentAmount">Amount paid (€)</label><input id="paymentAmount" type="number" min="0.01" step="0.01" placeholder="180.00"></div>
+  </div>
+  <div class="actions"><button class="primary" id="addPayment">Add payment</button><span id="paymentFeedback" class="foot">Enter the actual amount paid.</span></div>
+ </article>
+ <article class="card">
+  <div class="tag">Payment history</div>
+  <div id="paymentList" class="payment-list"></div>
+  <div class="payment-total"><span>Total payments recorded</span><strong id="paymentGrandTotal">€816.00</strong></div>
+ </article>
+</section>
+<section class="section-head"><h2>Month-by-month overview</h2><p>Previous-year figures are transcribed from your PNG. Current-year values are entered manually.</p></section>
+<div class="tablewrap"><table class="table"><thead><tr><th>Month</th><th>Last year electricity</th><th class="current">This year electricity</th><th>Difference</th><th>Last year gas</th><th class="current">This year gas</th><th>Difference</th><th class="current">Current usage cost</th><th>Status</th></tr></thead><tbody id="rows"></tbody></table></div>
+<footer class="footer"><span>Baseline: Jul 2025–Jun 2026 · 3,301 kWh · 722 m³</span><span>Current year: Jul 2026–Jun 2027 · Manual entries · No fixed costs</span></footer>
+</main><script src="app.js" defer></script></body></html>
