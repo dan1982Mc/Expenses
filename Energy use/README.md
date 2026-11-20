@@ -1,55 +1,66 @@
-# Household Energy Dashboard
+# Household Energy Account Dashboard
 
-**Dashboard:** [Open the dashboard files](index.html)  
-**Original historical screenshot:** [Schermafbeelding 2026-11-20 150101.png](Schermafbeelding%202026-11-20%20150101.png)
+**Open the dashboard:** [index.html](index.html)  
+**Original history image:** [Schermafbeelding 2026-11-20 150101.png](Schermafbeelding%202026-11-20%20150101.png)
 
-A simple, standalone monthly energy tracker for this household. It uses the historical monthly values transcribed from the PNG and manual monthly entries for the months that follow. **It does not use either CSV export.**
+A standalone dashboard for tracking household electricity and gas consumption, supplier advance payments, and the projected energy-year settlement. It uses the historical monthly values transcribed from the PNG and manual monthly consumption entries. **It does not import or depend on the CSV files.**
 
-## Tracking period
+## Your energy year
 
-- Energy year: **1 July to 30 June**.
-- Historical comparison year: **July 2025 – June 2026**.
-- Previous house data before July 2025 is intentionally excluded.
-- Baseline total: **3,301 kWh electricity** and **722 m³ gas**.
-- The manual-entry year in the current app is **July 2026 – June 2027**.
+- Energy year starts on **1 July** and ends on **30 June**.
+- Comparison baseline: **July 2025 – June 2026**.
+- Data before July 2025 is excluded because it relates to a different house.
+- Baseline consumption: **3,301 kWh electricity** and **722 m³ gas**.
+- Current tracking year: **July 2026 – June 2027**.
 
-The source PNG is retained in this folder. Its transcribed values are also stored in [history-baseline.json](history-baseline.json).
-
-## Starting rates and payment
+## Unit prices and payments already entered
 
 | Setting | Value |
 |---|---:|
-| Electricity unit price | **€0.26697 / kWh** |
-| Gas unit price | **€1.43817 / m³** |
-| Monthly advance payment | **€180** |
-| Annual advance plan | **€2,160** |
-| Fixed charges | **€0** until entered |
+| Electricity | **€0.26697 / kWh** |
+| Gas | **€1.43817 / m³** |
+| Current monthly advance | **€180** |
+| Payments already logged | **2 × €228 + 2 × €180 = €816** |
+| Separate fixed costs | **None included** |
 
-The unit prices were supplied by the household owner and can be changed in the dashboard. Fixed charges are kept separate because the supplied rates may not include every fixed component of the supplier bill.
+The four initial payments are stored without dates because dates were not supplied. You can remove and re-enter a payment with a date if you want a dated ledger. Record each future payment using the payment form; the monthly advance setting is only used for the annual payment plan and does not automatically invent payments.
 
-## How to use it
+## How the cost and account calculations work
+
+- Monthly energy cost = electricity kWh × electricity rate + gas m³ × gas rate.
+- A month's cost is counted only when both electricity and gas values are entered.
+- Payments logged = sum of actual payment records.
+- Paid less recorded consumption cost = payments logged minus costs for months with both readings. This is a running comparison, **not a confirmed supplier credit**, because missing readings and payment dates may affect the true balance.
+- Projected full-year energy cost uses complete current-year months entered consecutively from July, then uses the matching 2025/26 monthly consumption for the remaining months. As you enter actual consumption, the estimate is replaced month by month.
+- Projected annual credit / shortfall = 12 × current monthly advance − projected full-year energy cost.
+- No additional fixed charges are added.
+
+At the current rates, the previous-year baseline costs approximately **€1,919.63 per year**, or **€159.97 per month**. At €180 per month, the projected annual advance is €2,160, giving an indicative buffer of **€240.37** if consumption and rates remain comparable.
+
+## Monthly update routine
 
 1. Open `index.html` in a modern browser.
-2. Select the relevant month in the July–June energy year.
-3. Enter electricity in kWh and gas in m³, then choose whether the figures are complete or estimates.
-4. Save the month. The dashboard updates annual-to-date totals, same-period year-on-year comparison, month-on-month changes and estimated variable energy costs.
-5. Update unit prices, fixed charges and advance-payment settings when they change.
-6. Use **Export backup** periodically. **Import backup** restores the entries and settings.
+2. Select the month in the July–June energy year.
+3. Enter monthly electricity in kWh and gas in m³.
+4. Mark actual readings as “Actual monthly reading”, or mark estimates/partial readings accordingly.
+5. Save the month. The dashboard refreshes consumption comparisons, monthly costs, payment balance and annual forecast.
+6. Add each supplier advance payment when it is actually paid. You can include the payment date.
+7. Use **Export backup** regularly. **Import backup** restores consumption entries, rates and payment history.
 
 ## Files
 
 - `index.html` — dashboard page.
-- `styles.css` — dashboard layout and styling.
-- `app.js` — monthly-entry, comparison and cost calculations.
-- `history-baseline.json` — structured copy of the July 2025–June 2026 PNG data.
+- `styles.css` — dashboard styling.
+- `app.js` — calculations, manual entries, payment ledger and backup/restore.
+- `history-baseline.json` — structured copy of the PNG historical data.
 - `Schermafbeelding 2026-11-20 150101.png` — original image source.
 
-## Saving and sharing your entries
+## Saving and publishing
 
-The website files and historical baseline are stored in this GitHub repository. **Monthly entries and setting changes are stored in the browser's local storage; they are not automatically written back to GitHub or shared across devices.** Export a JSON backup to retain your entries or move them to another browser/device.
+GitHub stores the dashboard source and historical baseline. Your monthly readings, payment ledger and setting changes are saved in the browser's local storage, not automatically committed to GitHub or shared between devices. Use Export backup to retain or transfer the data.
 
-To publish it as a web page, enable GitHub Pages in repository Settings → Pages and select the `main` branch. The page will then be available at:
+For GitHub Pages, select the `main` branch and the `/ (root)` folder in repository Settings → Pages. The page should then be available at:
 
 `https://dan1982mc.github.io/Expenses/Energy%20use/`
 
-If GitHub Pages is not enabled, download the three app files together and open `index.html` locally. Keep `styles.css` and `app.js` in the same folder as `index.html`.
+The three application files must stay together in the same folder if you download and run the dashboard locally.
