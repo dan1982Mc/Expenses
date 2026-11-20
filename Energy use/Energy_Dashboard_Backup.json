@@ -1,0 +1,33 @@
+{
+  "app": "Household Energy Dashboard",
+  "version": 2,
+  "state": {
+    "entries": {
+      "aug": {
+        "e": 191,
+        "g": 17,
+        "status": "complete"
+      },
+      "sep": {
+        "e": 239,
+        "g": 30,
+        "status": "complete"
+      },
+      "oct": {
+        "e": 299,
+        "g": 46,
+        "status": "complete"
+      },
+      "jul": {
+        "e": 139,
+        "g": 15,
+        "status": "complete"
+      }
+    },
+    "erate": "0.26697",
+    "grate": "1.43817",
+    "fixed": "0",
+    "advance": "180",
+    "paid": "0"
+  }
+}
