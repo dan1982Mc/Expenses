@@ -20,6 +20,7 @@ A standalone dashboard for tracking household electricity and gas consumption, s
 | Electricity | **€0.26697 / kWh** |
 | Gas | **€1.43817 / m³** |
 | Current monthly advance | **€180** |
+| One-off refund / credit applied to annual forecast | **€450** |
 | Payments already logged | **2 × €228 + 2 × €180 = €816** |
 | Separate fixed costs | **None included** |
 
@@ -32,10 +33,12 @@ The four initial payments are stored without dates because dates were not suppli
 - Payments logged = sum of actual payment records.
 - Paid less recorded consumption cost = payments logged minus costs for months with both readings. This is shown at the bottom of the Payments made to supplier card. It is a running comparison, **not a confirmed supplier credit**, because missing readings and payment dates may affect the true balance.
 - Projected full-year energy cost uses complete current-year months entered consecutively from July, then uses the matching 2025/26 monthly consumption for the remaining months. As you enter actual consumption, the estimate is replaced month by month.
-- Projected annual credit / shortfall = 12 × current monthly advance − projected full-year energy cost.
-- No additional fixed charges are added.
+- Projected net annual energy cost = projected gross consumption cost − the one-off **€450 refund**. The refund is deducted once, not from every month.
+- Projected annual credit / shortfall = 12 × current monthly advance − projected net annual energy cost.
+- The top electricity and gas cards compare the current total against the same number of consecutive actual months in the previous energy year. For the first four months (July–October), the baseline is **788 kWh** and **123 m³**.
+- No additional fixed charges are added. The €450 refund is not added to the payments ledger or deducted from the running "payments minus recorded consumption cost" figure; it is applied to the net annual cost forecast.
 
-At the current rates, the previous-year baseline costs approximately **€1,919.63 per year**, or **€159.97 per month**. At €180 per month, the projected annual advance is €2,160, giving an indicative buffer of **€240.37** if consumption and rates remain comparable.
+At the current rates, the previous-year consumption baseline costs approximately **€1,919.63 before refund**. After the one-off €450 refund, the forecast net cost is **€1,469.63**, or **€122.47 per month**. At €180 per month, the projected annual advance is €2,160, giving an indicative buffer of **€690.37** if consumption, rates and the refund remain as entered.
 
 ## Monthly update routine
 
