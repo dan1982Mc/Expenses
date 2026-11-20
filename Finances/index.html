@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <title>Household finances</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">€</div>
+      <div><strong>Household finances</strong><span>Private · local analysis</span></div>
+    </div>
+    <div class="top-actions">
+      <span class="connection"><i></i> Offline-ready</span>
+      <button class="button button-quiet" id="backupBtn">Backup</button>
+      <button class="button button-primary" id="showImportBtn">Import CSVs</button>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="welcome panel" id="welcomePanel">
+      <div class="welcome-copy">
+        <div class="eyebrow">HOUSEHOLD FINANCE ANALYSIS</div>
+        <h1>Understand where your money goes.</h1>
+        <p>Import the Revolut statements for Dan and Anca. Transactions stay in this browser; the dashboard does not send them to a server.</p>
+      </div>
+      <div class="welcome-stat"><strong>2023–2026</strong><span>Historical comparison</span></div>
+    </section>
+
+    <section class="import-panel panel" id="importPanel">
+      <div class="section-heading">
+        <div><div class="eyebrow">DATA IMPORT</div><h2>Load your Revolut statements</h2></div>
+        <button class="icon-button" id="closeImportBtn" aria-label="Close import panel">×</button>
+      </div>
+      <p class="muted">Select all available CSV exports for each account. You can import additional statements later. Previously imported transactions are detected and skipped.</p>
+      <div class="import-grid">
+        <label class="file-drop">
+          <span class="file-icon">D</span><strong>Dan's account</strong>
+          <span>Choose one or more CSV files</span>
+          <input type="file" id="danFiles" accept=".csv,text/csv" multiple>
+          <small id="danFileNames">No files selected</small>
+        </label>
+        <label class="file-drop">
+          <span class="file-icon anca">A</span><strong>Anca's account</strong>
+          <span>Choose one or more CSV files</span>
+          <input type="file" id="ancaFiles" accept=".csv,text/csv" multiple>
+          <small id="ancaFileNames">No files selected</small>
+        </label>
+      </div>
+      <div class="import-footer">
+        <span id="importMessage" class="muted">Expected columns: Type, Product, Started Date, Completed Date, Description, Amount, Fee, Currency, State, Balance.</span>
+        <button class="button button-primary" id="importBtn">Import selected files</button>
+      </div>
+      <div class="import-note"><strong>Privacy:</strong> imported transactions are stored in this browser's IndexedDB. They are not uploaded to GitHub or transmitted by this application. Use Backup to export a private copy.</div>
+    </section>
+
+    <section id="workspace" hidden>
+      <div class="workspace-head">
+        <div><div class="eyebrow">YOUR HOUSEHOLD</div><h1>Financial overview</h1><p id="dataStatus" class="muted">No transactions imported yet.</p></div>
+        <div class="head-filters">
+          <label>Account<select id="accountFilter"><option value="all">Household · both accounts</option><option value="Dan">Dan</option><option value="Anca">Anca</option></select></label>
+          <label>Period<input type="month" id="periodFilter"></label>
+        </div>
+      </div>
+
+      <nav class="tabs" aria-label="Dashboard sections">
+        <button class="tab active" data-tab="overview">Overview</button>
+        <button class="tab" data-tab="compare">Comparisons</button>
+        <button class="tab" data-tab="projects">Projects & incidental</button>
+        <button class="tab" data-tab="rules">Rules</button>
+        <button class="tab" data-tab="transactions">Transactions <span id="reviewBadge" class="tab-badge">0</span></button>
+        <button class="tab" data-tab="forecast">Savings forecast</button>
+      </nav>
+
+      <section class="page active" id="page-overview">
+        <div class="kpi-grid">
+          <article class="kpi-card"><span>Income this period</span><strong id="kpiIncome">€0</strong><small id="kpiIncomeSub">Completed income transactions</small></article>
+          <article class="kpi-card"><span>Net expenses</span><strong id="kpiExpenses">€0</strong><small id="kpiExpensesSub">Expenses less refunds</small></article>
+          <article class="kpi-card"><span>Investments</span><strong id="kpiInvestments">€0</strong><small>Shown separately from consumption</small></article>
+          <article class="kpi-card accent"><span>Cash flow after expenses</span><strong id="kpiNet">€0</strong><small>Income less expenses and investments</small></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel wide">
+            <div class="section-heading"><div><div class="eyebrow">WHAT CHANGED?</div><h2>Category comparison</h2></div><select id="overviewMetric"><option value="expense">Expenses</option><option value="income">Income</option></select></div>
+            <p class="muted" id="overviewPeriodNote">Compared with the same period last year and the historical average.</p>
+            <div id="overviewComparison" class="comparison-list empty-state">Import statements to see category comparisons.</div>
+            <button class="text-button" data-goto="compare">Open full comparison →</button>
+          </article>
+          <article class="panel">
+            <div class="eyebrow">ATTENTION</div><h2>What needs review?</h2>
+            <div class="review-summary">
+              <div><strong id="reviewCount">0</strong><span>Unclassified transfers</span></div>
+              <div><strong id="incidentalCount">0</strong><span>Incidental candidates</span></div>
+              <div><strong id="pendingCount">0</strong><span>Pending / reverted rows</span></div>
+            </div>
+            <div id="attentionNotes" class="attention-notes"></div>
+            <button class="text-button" data-goto="transactions">Review transactions →</button>
+          </article>
+        </div>
+        <article class="panel insight-panel">
+          <div class="section-heading"><div><div class="eyebrow">AUTOMATIC INSIGHTS</div><h2>Things worth noticing</h2></div><span class="muted small">Based on imported completed transactions</span></div>
+          <div id="insights" class="insight-grid"><div class="empty-state">Insights appear after importing transactions.</div></div>
+        </article>
+      </section>
+
+      <section class="page" id="page-compare">
+        <div class="page-intro"><div><div class="eyebrow">HISTORICAL ANALYSIS</div><h2>Compare like with like</h2><p class="muted">The selected month is compared with the same calendar month in the previous year and the average of available earlier years. An incomplete latest month uses the same day-of-month cutoff for every year.</p></div>
+          <label class="inline-select">Measure<select id="compareMetric"><option value="expense">Expenses</option><option value="income">Income</option></select></label>
+        </div>
+        <div class="kpi-grid compact">
+          <article class="kpi-card"><span>Selected period</span><strong id="compareCurrent">€0</strong><small id="compareCurrentSub">Current period</small></article>
+          <article class="kpi-card"><span>Same period last year</span><strong id="compareLastYear">—</strong><small id="compareLastYearSub">Year-on-year baseline</small></article>
+          <article class="kpi-card"><span>Previous years' average</span><strong id="compareAverage">—</strong><small id="compareAverageSub">Available historical years</small></article>
+          <article class="kpi-card accent"><span>Difference vs last year</span><strong id="compareDelta">—</strong><small id="compareDeltaSub">Absolute and percentage difference</small></article>
+        </div>
+        <article class="panel">
+          <div class="section-heading"><div><div class="eyebrow">BY CATEGORY</div><h2>Where the difference comes from</h2></div><span id="historyYears" class="muted small"></span></div>
+          <div id="comparisonTable" class="table-wrap"><div class="empty-state">Import data to calculate historical comparisons.</div></div>
+        </article>
+        <div class="note-box">Comparison years are included only when the selected account has transaction data in that calendar month. A missing historical year is not treated as zero.</div>
+      </section>
+
+      <section class="page" id="page-projects">
+        <div class="page-intro"><div><div class="eyebrow">EXCEPTIONAL SPENDING</div><h2>Projects & incidental expenses</h2><p class="muted">Keep everyday categories intact while grouping trips, renovations and other time-limited spending into projects.</p></div></div>
+        <div class="content-grid">
+          <article class="panel wide"><div class="section-heading"><div><div class="eyebrow">PROJECTS</div><h2>Spending by project</h2></div><button class="button button-secondary" data-goto="rules">Create a project rule</button></div><div id="projectSummary" class="project-grid"><div class="empty-state">Add a project label through a rule or transaction override.</div></div></article>
+          <article class="panel"><div class="eyebrow">DETECTION SETTINGS</div><h2>Incidental candidates</h2><p class="muted small">Suggestions are based on how often a merchant appears in the selected year. They do not change the category automatically.</p>
+            <label class="form-label">Maximum transactions per merchant / year<input type="number" id="incidentalMax" min="1" max="12" value="2"></label>
+            <label class="form-label">Minimum total amount (€)<input type="number" id="incidentalMin" min="0" step="5" value="75"></label>
+            <button class="button button-secondary" id="saveIncidental">Update detection</button>
+          </article>
+        </div>
+        <article class="panel"><div class="section-heading"><div><div class="eyebrow">SUGGESTIONS</div><h2>Possible one-time or limited expenses</h2></div><span class="muted small" id="incidentalPeriod"></span></div><div id="incidentalList" class="table-wrap"><div class="empty-state">Import transactions to detect incidental expenses.</div></div></article>
+      </section>
+
+      <section class="page" id="page-rules">
+        <div class="page-intro"><div><div class="eyebrow">AUTOMATIC CLASSIFICATION</div><h2>Rules that fit your life</h2><p class="muted">Create rules from merchant names, dates, accounts, transaction types and amounts. Newer matching rules take precedence for fields they set. Individual transaction overrides always take priority.</p></div></div>
+        <article class="panel">
+          <div class="section-heading"><div><div class="eyebrow">NEW RULE</div><h2>Create an automatic rule</h2></div></div>
+          <form id="ruleForm" class="rule-form">
+            <label class="form-label">Rule name<input name="name" required placeholder="Summer holiday 2026"></label>
+            <label class="form-label">Account<select name="account"><option value="all">Both accounts</option><option value="Dan">Dan</option><option value="Anca">Anca</option></select></label>
+            <label class="form-label">Description / merchant contains<input name="contains" placeholder="Optional, e.g. Booking.com"></label>
+            <label class="form-label">Transaction type<select name="type"><option value="all">Any type</option><option>Card Payment</option><option>Card Refund</option><option>Transfer</option><option>Deposit</option><option>Topup</option><option>Fee</option><option>Exchange</option></select></label>
+            <label class="form-label">Date from<input name="dateFrom" type="date"></label>
+            <label class="form-label">Date to<input name="dateTo" type="date"></label>
+            <label class="form-label">Amount minimum (€)<input name="amountMin" type="number" min="0" step="0.01" placeholder="Optional"></label>
+            <label class="form-label">Amount maximum (€)<input name="amountMax" type="number" min="0" step="0.01" placeholder="Optional"></label>
+            <label class="form-label">Apply to<select name="direction"><option value="all">All matching transactions</option><option value="expense">Expenses and refunds only</option><option value="income">Income only</option></select></label>
+            <label class="form-label">Set category<input name="category" list="categoryOptions" placeholder="Leave blank to keep current category"></label>
+            <label class="form-label">Set project / event<input name="project" placeholder="e.g. Summer holiday 2026"></label>
+            <label class="form-label">Set treatment<select name="treatment"><option value="">Keep current treatment</option><option value="expense">Expense</option><option value="income">Income</option><option value="refund">Refund</option><option value="internal">Internal transfer</option><option value="investment">Investment</option><option value="review">Needs review</option><option value="exclude">Exclude</option></select></label>
+            <label class="form-label">Expense nature<select name="nature"><option value="">Automatic / unchanged</option><option value="ordinary">Normal expense</option><option value="incidental">Incidental / one-time</option><option value="annual">Annual expense</option><option value="limited">Limited recurring</option></select></label>
+            <div class="form-actions"><button class="button button-primary" type="submit">Save rule</button><span class="muted small">Example: use a date range with “Expenses only” and a project name to group all holiday spending.</span></div>
+          </form>
+        </article>
+        <article class="panel"><div class="section-heading"><div><div class="eyebrow">YOUR RULES</div><h2>Active classification rules</h2></div><span class="muted small" id="ruleCount">0 rules</span></div><div id="rulesList" class="rules-list"><div class="empty-state">No custom rules yet.</div></div></article>
+        <datalist id="categoryOptions"></datalist>
+      </section>
+
+      <section class="page" id="page-transactions">
+        <div class="page-intro"><div><div class="eyebrow">TRANSACTION REVIEW</div><h2>Find and correct transactions</h2><p class="muted">Search merchants, inspect classifications and override individual transactions. Imported rows are never altered in their original source fields.</p></div><button class="button button-secondary" id="exportCsvBtn">Export filtered CSV</button></div>
+        <div class="filter-row">
+          <label class="search-field">Search<input type="search" id="transactionSearch" placeholder="Merchant, description or project"></label>
+          <label>Category<select id="transactionCategory"><option value="all">All categories</option><option value="__review">Needs review</option></select></label>
+          <label>Treatment<select id="transactionTreatment"><option value="all">All treatments</option><option value="expense">Expense</option><option value="income">Income</option><option value="refund">Refund</option><option value="internal">Internal transfer</option><option value="investment">Investment</option><option value="review">Needs review</option><option value="exclude">Excluded</option></select></label>
+        </div>
+        <div class="table-wrap"><table class="data-table"><thead><tr><th>Date</th><th>Account</th><th>Description</th><th>Amount</th><th>Category / project</th><th>Classification</th><th></th></tr></thead><tbody id="transactionRows"><tr><td colspan="7" class="empty-state">Import statements to view transactions.</td></tr></tbody></table></div>
+        <div class="table-footer"><span id="transactionCount" class="muted small">0 transactions</span><div><button class="button button-secondary" id="prevPage">Previous</button><button class="button button-secondary" id="nextPage">Next</button></div></div>
+      </section>
+
+      <section class="page" id="page-forecast">
+        <div class="page-intro"><div><div class="eyebrow">CASH FLOW PLANNING</div><h2>How much could we safely save?</h2><p class="muted">A forward-looking estimate using your current account balances, the next salary date and recent household spending. Account balances must be entered manually because CSV exports are historical.</p></div></div>
+        <div class="forecast-grid">
+          <article class="panel"><div class="eyebrow">YOUR INPUTS</div><h2>Cash available now</h2>
+            <label class="form-label">Dan's current available balance (€)<input id="balanceDan" type="number" step="0.01" placeholder="Enter current balance"></label>
+            <label class="form-label">Anca's current available balance (€)<input id="balanceAnca" type="number" step="0.01" placeholder="Enter current balance"></label>
+            <label class="form-label">Next salary date<input id="nextSalaryDate" type="date"></label>
+            <label class="form-label">Other income arriving before salary (€)<input id="incomeBeforePayday" type="number" min="0" step="0.01" placeholder="0"></label>
+            <label class="form-label">Known payments before salary (€)<input id="upcomingPayments" type="number" min="0" step="0.01" placeholder="0"></label>
+            <label class="form-label">Minimum cash reserve (€)<input id="cashReserve" type="number" min="0" step="0.01" placeholder="300"></label>
+            <button class="button button-primary" id="saveForecast">Calculate savings potential</button>
+          </article>
+          <article class="panel forecast-result"><div class="eyebrow">ESTIMATED SAFE SAVINGS</div><h2 id="safeSavings">Enter your balances</h2><p id="forecastStatus" class="muted">The forecast will show how much remains after estimated spending, known payments and your minimum reserve.</p>
+            <div class="forecast-breakdown" id="forecastBreakdown"></div>
+            <div class="note-box">This is a planning estimate, not a bank balance or a guarantee. The spending rate uses the latest 90 days of imported transactions. Update the CSVs and balances before relying on the result.</div>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <section class="storage-footer" id="storageFooter">
+      <span id="storageStatus">Data remains in this browser only.</span>
+      <div><button class="text-button" id="restoreBtn">Restore backup</button><button class="text-button danger-text" id="clearDataBtn">Clear local data</button><input type="file" id="restoreFile" accept=".json,application/json" hidden></div>
+    </section>
+    <footer><span>Household finances · Version 1.0</span><span>No bank connection · No external analytics · Local browser storage</span></footer>
+  </main>
+
+  <dialog id="editDialog">
+    <form method="dialog" id="editForm">
+      <div class="section-heading"><div><div class="eyebrow">MANUAL OVERRIDE</div><h2>Edit transaction classification</h2></div><button class="icon-button" value="cancel" aria-label="Close">×</button></div>
+      <p id="editTransactionLabel" class="muted"></p>
+      <input type="hidden" id="editId">
+      <label class="form-label">Category<select id="editCategory"></select></label>
+      <label class="form-label">Project / event<input id="editProject" placeholder="Optional"></label>
+      <label class="form-label">Treatment<select id="editTreatment"><option value="auto">Use automatic classification</option><option value="expense">Expense</option><option value="income">Income</option><option value="refund">Refund</option><option value="internal">Internal transfer</option><option value="investment">Investment</option><option value="review">Needs review</option><option value="exclude">Exclude</option></select></label>
+      <label class="form-label">Expense nature<select id="editNature"><option value="auto">Automatic detection</option><option value="ordinary">Normal expense</option><option value="incidental">Incidental / one-time</option><option value="annual">Annual expense</option><option value="limited">Limited recurring</option></select></label>
+      <div class="dialog-actions"><button class="button button-secondary" id="clearOverrideBtn" type="button">Clear override</button><span></span><button class="button button-primary" id="saveOverrideBtn" type="button">Save override</button></div>
+    </form>
+  </dialog>
+  <script src="app.js"></script>
+</body>
+</html>
