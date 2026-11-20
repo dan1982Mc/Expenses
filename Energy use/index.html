@@ -14,15 +14,19 @@
  <article class="card kpi"><div class="label">Electricity used this year</div><div class="big" id="ekpi">—</div><div class="foot" id="efoot">Previous year: 3,301 kWh</div></article>
  <article class="card kpi gas"><div class="label">Gas used this year</div><div class="big" id="gkpi">—</div><div class="foot" id="gfoot">Previous year: 722 m³</div></article>
  <article class="card kpi cost"><div class="label">Cost of entered consumption</div><div class="big" id="ckpi">—</div><div class="foot" id="cfoot">Calculated from complete months</div></article>
- <article class="card kpi paid"><div class="label">Payments made to supplier</div><div class="big" id="pkpi">€816.00</div><div class="foot" id="pfoot">4 payments recorded</div></article>
+ <article class="card kpi paid"><div class="label">Payments made to supplier</div><div class="big" id="pkpi">€816.00</div><div class="foot" id="pfoot">4 payments recorded</div><div class="paid-balance"><span>Paid less entered consumption cost</span><strong id="balance">Waiting for usage entries</strong></div></article>
 </section>
-<section class="section-head"><h2>Your energy account</h2><p>The most important comparison: money paid to the supplier versus the estimated cost of the energy used.</p></section>
+<section class="section-head"><h2>Current position and annual forecast</h2><p>Compare the latest month with the same month last year, and check whether your monthly advance is on track.</p></section>
 <section class="grid account-grid">
- <article class="card account">
-  <div class="tag">Paid vs consumed · current energy year</div>
-  <div class="account-hero"><div><span class="foot">Payments logged</span><strong id="paidTotal">€816.00</strong></div><div><span class="foot">Cost of complete months entered</span><strong id="usageCost">—</strong></div></div>
-  <div class="balance-line"><span>Paid less entered consumption cost</span><strong id="balance">Waiting for usage entries</strong></div>
-  <p class="note">This is a running comparison, not your supplier's confirmed credit. Any month without both electricity and gas readings is excluded from the consumption-cost total.</p>
+ <article class="card monthly-compare">
+  <div class="tag">Same month last year · latest entered month</div>
+  <div class="compare-month" id="compareMonth">No current-year month entered yet</div>
+  <div class="yoy-row">
+   <div class="yoy-label">Electricity</div><div><strong id="emom">—</strong><div class="foot" id="emomsub">Enter a monthly electricity reading.</div></div>
+  </div>
+  <div class="yoy-row">
+   <div class="yoy-label">Gas</div><div><strong id="gmom">—</strong><div class="foot" id="gmomsub">Enter a monthly gas reading.</div></div>
+  </div>
  </article>
  <article class="card forecast">
   <div class="tag">Are €180 monthly advances enough?</div>
@@ -37,10 +41,6 @@
 <section class="grid two">
  <article class="card"><div class="tag">Electricity · kWh</div><div class="compare"><div><span class="foot">Current year entered</span><strong id="eytd">—</strong><span class="foot" id="eytdsub">No entries yet</span></div><div><span class="foot">Change vs same months last year</span><strong id="echg">—</strong><span class="foot" id="echgsub">Waiting for entries</span></div></div><svg id="echart" class="chart" viewBox="0 0 540 175" role="img" aria-label="Electricity comparison by month"></svg><div class="legend"><i class="swatch old"></i>2025/26 <i class="swatch new"></i>2026/27</div></article>
  <article class="card"><div class="tag">Gas · m³</div><div class="compare"><div><span class="foot">Current year entered</span><strong id="gytd">—</strong><span class="foot" id="gytdsub">No entries yet</span></div><div><span class="foot">Change vs same months last year</span><strong id="gchg">—</strong><span class="foot" id="gchgsub">Waiting for entries</span></div></div><svg id="gchart" class="chart" viewBox="0 0 540 175" role="img" aria-label="Gas comparison by month"></svg><div class="legend"><i class="swatch old"></i>2025/26 <i class="swatch new"></i>2026/27</div></article>
-</section>
-<section class="grid two mom-grid">
- <article class="card"><div class="tag">Latest month-on-month · electricity</div><div class="big" id="emom">—</div><div class="foot" id="emomsub">Enter two consecutive months.</div></article>
- <article class="card"><div class="tag">Latest month-on-month · gas</div><div class="big" id="gmom">—</div><div class="foot" id="gmomsub">Enter two consecutive months.</div></article>
 </section>
 <section class="section-head"><h2>Update monthly consumption</h2><p>Use your monthly energy statement or meter portal. This dashboard intentionally does not import the CSV files.</p></section>
 <section class="grid input-grid">
